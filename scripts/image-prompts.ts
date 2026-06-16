@@ -37,7 +37,38 @@ export const imagePrompts: ImagePromptSpec[] = [
     quality: 'high',
     outputWidth: 1920,
   },
-  // Añade aquí más imágenes en próximas iteraciones (servicios, equipo, antes/después).
+  {
+    id: 'desatascos-tuberias',
+    description: 'Hero de página de servicio: manos del técnico desatascando una tubería con sonda eléctrica',
+    prompt: `Photorealistic professional commercial photograph for a Spanish plumbing / drain-cleaning service. Cinematic close-up shot of a male plumbing technician's hands and forearms in dark navy work uniform with black nitrile gloves, operating a professional electric drain auger machine (sonda eléctrica) to unclog a kitchen sink pipe under a clean modern white kitchen counter in a Spanish coastal apartment. The flexible auger cable is clearly visible entering the pipe. A professional toolbox with chrome wrenches is open nearby. Soft natural Mediterranean morning daylight comes through a window. Shallow depth of field, sharp focus on the hands and the auger machine, slight motion blur on the rotating cable suggests action. No faces visible, no logos, no text. Editorial commercial photography, 35mm lens, photorealistic, high detail.`,
+    size: '1536x1024',
+    quality: 'high',
+    outputWidth: 1600,
+  },
+  {
+    id: 'limpieza-arquetas-pozos',
+    description: 'Hero de página de servicio: camión cuba aspirando una arqueta en calle de Fuengirola',
+    prompt: `Photorealistic professional commercial photograph for a Spanish drain-cleaning company. A large clean white industrial vacuum tanker truck (camión cuba) parked on a sunny residential street in a Spanish coastal town in Andalusia: whitewashed houses, palm trees, bright Mediterranean midday light. A thick corrugated black suction hose runs from the truck down into an open street manhole / arqueta in the foreground. A male technician in dark navy uniform and black gloves, viewed from the side from waist down, professionally guides the hose into the manhole. Clean professional equipment, no visible logos or text on the truck. Sharp clear photography, professional 35mm lens, photorealistic, editorial commercial quality, no faces in close-up.`,
+    size: '1536x1024',
+    quality: 'high',
+    outputWidth: 1600,
+  },
+  {
+    id: 'desatoros-urgentes-24h',
+    description: 'Hero de página de servicio: furgoneta de urgencia 24h al anochecer en calle de Costa del Sol',
+    prompt: `Photorealistic professional commercial photograph for a 24-hour emergency drain service in coastal Spain. Twilight scene on a quiet residential street in coastal Andalusia (Fuengirola style: whitewashed buildings, a palm tree). A clean white service van parked at the curb with its rear doors open, softly illuminated by an amber street light and the warm interior lights of the van. The inside of the van shows neatly organized professional plumbing tools, drain auger reels and equipment on shelves. A male technician in dark navy uniform, viewed from behind in a three-quarters angle, is reaching for a tool from the van, ready to respond. Mood: calm urgency, late evening, warm streetlight tones contrasted with the cool blue dusk sky. Photorealistic, cinematic, sharp focus on the van interior and tools, professional 35mm photography, no logos, no text, no faces visible, editorial commercial quality.`,
+    size: '1536x1024',
+    quality: 'high',
+    outputWidth: 1600,
+  },
+  {
+    id: 'equipo',
+    description: 'Equipo: dos técnicos junto a la furgoneta en Fuengirola (diferenciador del negocio)',
+    prompt: `Photorealistic professional commercial photograph for a Spanish family-run drain-cleaning business. Two male technicians (one slightly older, around 40, the other in his early 30s) in matching dark navy work uniforms with black gloves, standing side by side next to a clean white professional service van on a sunny residential street in coastal Andalusia (Fuengirola, Costa del Sol). They are viewed from a three-quarter angle and looking slightly off-camera toward the right, posed naturally — confident, approachable, professional, calm — not smiling at the camera. Whitewashed Spanish buildings and a palm tree in the background, hint of the Mediterranean sea on the horizon. Warm late-afternoon golden light. Professional 35mm commercial photography, sharp focus, photorealistic, no logos or text on uniforms or van, editorial quality.`,
+    size: '1536x1024',
+    quality: 'high',
+    outputWidth: 1600,
+  },
 ];
 
 export function getPromptById(id: string): ImagePromptSpec | undefined {

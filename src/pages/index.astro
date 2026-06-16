@@ -89,17 +89,29 @@ const ventajas = [
   <!-- POR QUÉ -->
   <section class="section section-alt" id="por-que">
     <div class="container">
-      <div class="section-header">
-        <span class="section-label">Por qué elegirnos</span>
-        <h2>Cercanos, rápidos y sin letra pequeña</h2>
-      </div>
-      <div class="why-grid">
-        {ventajas.map((v) => (
-          <div class="why-point">
-            <div class="why-check"><Icon name="fa6-solid:check" /></div>
-            <div><h3>{v.t}</h3><p>{v.d}</p></div>
+      <div class="why-layout">
+        <figure class="why-photo">
+          <img
+            src="/img/equipo.webp"
+            alt={`Equipo de ${negocio.nombre} junto a su furgoneta en Fuengirola`}
+            width="1600"
+            height="1067"
+            loading="lazy"
+          />
+          <figcaption>{negocio.equipo.join(' y ')} — al frente del equipo</figcaption>
+        </figure>
+        <div>
+          <span class="section-label">Por qué elegirnos</span>
+          <h2 class="why-h2">Cercanos, rápidos y sin letra pequeña</h2>
+          <div class="why-grid">
+            {ventajas.map((v) => (
+              <div class="why-point">
+                <div class="why-check"><Icon name="fa6-solid:check" /></div>
+                <div><h3>{v.t}</h3><p>{v.d}</p></div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   </section>
@@ -219,9 +231,36 @@ const ventajas = [
     display: flex;
     align-items: center;
     padding-top: 72px;
-    background: var(--surface-dark);
-    background-image: linear-gradient(135deg, #0f172a 0%, var(--brand) 130%);
+    background-color: var(--surface-dark);
+    /* Foto del técnico en Costa del Sol + gradiente oscuro a la izquierda para
+       que el texto blanco sea legible. La foto se ve en el lado derecho. */
+    background-image:
+      linear-gradient(
+        100deg,
+        rgba(15, 23, 42, 0.92) 0%,
+        rgba(15, 23, 42, 0.78) 32%,
+        rgba(15, 23, 42, 0.35) 62%,
+        rgba(15, 23, 42, 0.45) 100%
+      ),
+      url('/img/hero.webp');
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
     overflow: hidden;
+  }
+  @media (max-width: 860px) {
+    /* En móvil oscurecemos más toda la foto para asegurar contraste del texto. */
+    .hero {
+      background-image:
+        linear-gradient(
+          180deg,
+          rgba(15, 23, 42, 0.82) 0%,
+          rgba(15, 23, 42, 0.7) 55%,
+          rgba(15, 23, 42, 0.95) 100%
+        ),
+        url('/img/hero.webp');
+      background-position: center;
+    }
   }
   .hero-content {
     max-width: 720px;
@@ -344,10 +383,53 @@ const ventajas = [
   }
 
   /* WHY */
+  .why-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .why-photo {
+    margin: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+  }
+  .why-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .why-photo figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 18px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.8) 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .why-h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.8px;
+    line-height: 1.15;
+    margin: 12px 0 28px;
+  }
   .why-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 860px) {
+    .why-layout {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
   }
   .why-point {
     display: flex;

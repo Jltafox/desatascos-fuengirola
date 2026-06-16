@@ -9,6 +9,17 @@ El _porqué_ de las decisiones de fondo está en [docs/DECISIONES.md](docs/DECIS
 
 ## 2026-06-16
 
+### Imágenes integradas (lote básico)
+- 4 imágenes nuevas generadas con `gpt-image-1` y optimizadas a WebP (~95 KB c/u):
+  `desatascos-tuberias`, `limpieza-arquetas-pozos`, `desatoros-urgentes-24h`, `equipo`.
+- Cada página de servicio usa su imagen por **convención de slug**:
+  `[servicio].astro` aplica `background-image: url(/img/${slug}.webp)` con gradiente
+  oscuro encima. Añadir una imagen futura no requiere tocar la plantilla.
+- Foto del equipo integrada en la sección "Por qué elegirnos" de la home con caption
+  "Sandro y Adrián — al frente del equipo". Materializa el diferenciador del
+  benchmark (caras y nombres reales del equipo).
+- Verificado en desktop y móvil (preview screenshots).
+
 ### Generación de imágenes con IA
 - Script `scripts/generate-images.ts` que llama a `gpt-image-1` (OpenAI) y
   optimiza a WebP con `sharp`. Prompts contextualizados en `scripts/image-prompts.ts`.
