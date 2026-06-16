@@ -14,8 +14,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const token = import.meta.env.TELEGRAM_BOT_TOKEN;
-  const chatId = import.meta.env.TELEGRAM_CHAT_ID;
+  const token = process.env.TELEGRAM_BOT_TOKEN ?? import.meta.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID ?? import.meta.env.TELEGRAM_CHAT_ID;
 
   if (!token || !chatId) {
     return new Response(JSON.stringify({ ok: false, error: 'Bot no configurado' }), {
