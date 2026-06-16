@@ -14,6 +14,9 @@ node_modules/
 .env.production
 .env.*.local
 
+# PNG originales pesados de generación de imágenes (mantenemos solo los .webp optimizados)
+public/img/*-original.png
+
 # logs
 npm-debug.log*
 *.log

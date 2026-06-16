@@ -71,7 +71,22 @@ Formato: cada decisión lleva **Contexto → Decisión → Por qué → Alternat
   en Vercel Hobby, ve directo a **SSR + middleware de Astro**. No pierdas tiempo con
   `robots`, el `middleware.ts` de raíz, ni el `edgeMiddleware` sobre páginas estáticas.
 
-## 7. Reseñas: filtrar las negativas/incoherentes
+## 7. Imágenes: generadas con IA + versionadas en git
+
+- **Decisión:** las imágenes se generan con `gpt-image-1` mediante el script
+  `scripts/generate-images.ts`, se optimizan a WebP y se **suben a git** en
+  `public/img/`. Los PNG originales (de respaldo) están en `.gitignore`.
+- **Por qué versionarlas:** volumen total previsto < 10 MB (~30 WebP a ~150 KB).
+  Git lo aguanta sin problema y se obtienen **deploys atómicos en Vercel**
+  (código e imágenes siempre sincronizados, incluido el rollback). Sin servicios
+  externos ni costes mensuales de CDN.
+- **Cuándo iría a CDN externo:** a partir de cientos de imágenes o si las generara
+  el cliente desde un panel. No es nuestro caso ni el de webs similares.
+- **Prompts contextualizados, no genéricos:** cada prompt menciona Costa del Sol,
+  oficio, luz mediterránea, etc. Sin caras en primer plano (gpt-image-1 falla
+  con detalles humanos).
+
+## 8. Reseñas: filtrar las negativas/incoherentes
 
 - **Decisión:** en `resenas.ts` solo van reseñas reales positivas; se descartaron una
   negativa ("venta forzada") y otra incoherente que mostraba la landing original.

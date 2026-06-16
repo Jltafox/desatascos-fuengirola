@@ -9,6 +9,16 @@ El _porqué_ de las decisiones de fondo está en [docs/DECISIONES.md](docs/DECIS
 
 ## 2026-06-16
 
+### Generación de imágenes con IA
+- Script `scripts/generate-images.ts` que llama a `gpt-image-1` (OpenAI) y
+  optimiza a WebP con `sharp`. Prompts contextualizados en `scripts/image-prompts.ts`.
+- Lanzar con `npm run generate:images` (lee `OPENAI_API_KEY` de `.env`).
+- Salida en `public/img/<id>.webp` (subido a git, ~150 KB cada uno).
+- PNG originales en `public/img/<id>-original.png` excluidos de git por peso.
+- Primera imagen prevista: `hero` (1536×1024 high, ~0.17 USD).
+- Decisión documentada: las imágenes SÍ se versionan en git para deploys atómicos
+  con Vercel (volumen previsto <10 MB; sin sobrecoste de CDN externo).
+
 ### Documentación
 - Añadidos `README.md`, `docs/DECISIONES.md`, `docs/PLANTILLA-NUEVA-WEB.md` y este
   `CHANGELOG.md` para poder replicar webs similares con todo el contexto.
