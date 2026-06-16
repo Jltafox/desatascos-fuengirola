@@ -219,6 +219,27 @@ const ventajas = [
           )}
         </div>
       </div>
+
+      <!--
+        MAPA: Ahora muestra Fuengirola centro como placeholder.
+        Cuando tengas la ficha de Google Business Profile verificada, sustituye
+        la URL del iframe por el embed de tu ficha GBP:
+          1. Abre tu ficha en Google Maps
+          2. Botón Compartir → Insertar un mapa → copia la URL del src del iframe
+          3. Pégala aquí en lugar de la URL actual
+      -->
+      <div class="mapa-wrap">
+        <iframe
+          title="Ecilimp Desatascos — Fuengirola"
+          src="https://maps.google.com/maps?q=Fuengirola%2C+M%C3%A1laga%2C+Spain&output=embed&z=13"
+          width="100%"
+          height="380"
+          style="border:0;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
     </div>
   </section>
 </Base>
@@ -634,5 +655,17 @@ const ventajas = [
     .contacto-wrap {
       grid-template-columns: 1fr;
     }
+  }
+
+  /* MAPA */
+  .mapa-wrap {
+    margin-top: 40px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .mapa-wrap iframe {
+    display: block;
   }
 </style>

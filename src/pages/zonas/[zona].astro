@@ -36,6 +36,20 @@ const description = `Desatascos y desatoros urgentes en ${zona.nombre}. Servicio
         <a href={telHref} class="btn btn-primary"><Icon name="fa6-solid:phone" /> Llamar — {negocio.telefono.display}</a>
         <a href={whatsappHref} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="fa6-brands:whatsapp" /> WhatsApp</a>
       </div>
+      <a
+        class="eta-badge"
+        href={`https://www.google.com/maps/dir/${zona.mapsDesde}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Ver ruta con tráfico actual en Google Maps"
+      >
+        <span class="eta-dot"></span>
+        <Icon name="fa6-solid:car" />
+        <span class="eta-text">
+          Llegamos habitualmente en <strong>{zona.eta.min}–{zona.eta.max} min</strong> desde Fuengirola
+        </span>
+        <span class="eta-maps">Ver tráfico ahora <Icon name="fa6-solid:arrow-up-right-from-square" /></span>
+      </a>
     </div>
   </section>
 
@@ -100,6 +114,59 @@ const description = `Desatascos y desatoros urgentes en ${zona.nombre}. Servicio
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .eta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-full);
+    padding: 10px 18px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: background var(--transition), border-color var(--transition);
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+  .eta-badge:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .eta-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+    50%       { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+  }
+  .eta-badge [data-icon]:first-of-type {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+  }
+  .eta-text strong {
+    color: #fff;
+    font-weight: 700;
+  }
+  .eta-maps {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--brand-light);
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  .eta-maps [data-icon] {
+    font-size: 11px;
   }
   .narrow {
     max-width: 760px;
