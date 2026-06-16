@@ -1,0 +1,33 @@
+---
+import { Icon } from 'astro-icon/components';
+import { negocio, telHref } from '../data/negocio';
+---
+
+<a href={telHref} class="floating-phone">
+  <Icon name="fa6-solid:phone" /> Llamar — {negocio.telefono.display}
+</a>
+
+<style>
+  .floating-phone {
+    display: none;
+    position: fixed;
+    inset: auto 16px 16px 16px;
+    z-index: 99;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 15px;
+    border-radius: var(--radius);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 8px 28px rgba(16, 155, 197, 0.4);
+  }
+  @media (max-width: 768px) {
+    .floating-phone {
+      display: flex;
+    }
+  }
+</style>

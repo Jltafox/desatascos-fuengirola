@@ -1,0 +1,65 @@
+---
+import { Icon } from 'astro-icon/components';
+import { negocio, telHref, whatsappHref } from '../../data/negocio';
+
+interface Props {
+  titulo?: string;
+}
+const { titulo = '¿Atasco en casa? Llámanos y lo solucionamos hoy mismo' } = Astro.props;
+---
+
+<section class="cta-banner">
+  <div class="container">
+    <h2>{titulo}</h2>
+    <a href={telHref} class="cta-phone">{negocio.telefono.display}</a>
+    <div class="cta-actions">
+      <a href={telHref} class="btn btn-primary"><Icon name="fa6-solid:phone" /> Llamar ahora — es gratis</a>
+      <a href={whatsappHref} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="fa6-brands:whatsapp" /> WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    background: var(--surface-dark);
+    padding: 72px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--surface-dark) 60%);
+    opacity: 0.18;
+  }
+  .cta-banner * {
+    position: relative;
+    z-index: 2;
+  }
+  .cta-banner h2 {
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .cta-phone {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -1px;
+    margin: 12px 0 24px;
+    display: block;
+  }
+  .cta-phone:hover {
+    color: var(--brand-light);
+  }
+  .cta-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

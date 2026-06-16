@@ -1,0 +1,126 @@
+---
+import { Icon } from 'astro-icon/components';
+import { negocio, telHref, whatsappHref, emailHref } from '../data/negocio';
+import { servicios } from '../data/servicios';
+import { ciudades } from '../data/zonas';
+
+const anio = new Date().getFullYear();
+const legales = [
+  { label: 'Aviso legal', href: '/aviso-legal/' },
+  { label: 'Política de privacidad', href: '/politica-privacidad/' },
+  { label: 'Política de cookies', href: '/politica-cookies/' },
+];
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">{negocio.nombre}</div>
+        <p class="footer-desc">{negocio.descripcion}</p>
+      </div>
+
+      <div>
+        <h4>Servicios</h4>
+        <ul class="footer-links">
+          {servicios.map((s) => (
+            <li><a href={`/servicios/${s.slug}/`}>{s.nombre}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4>Zonas</h4>
+        <ul class="footer-links">
+          {ciudades.map((z) => (
+            <li><a href={`/zonas/${z.slug}/`}>Desatascos en {z.nombre}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contacto</h4>
+        <ul class="footer-links">
+          <li><a href={telHref}><Icon name="fa6-solid:phone" /> {negocio.telefono.display}</a></li>
+          <li><a href={whatsappHref} target="_blank" rel="noopener"><Icon name="fa6-brands:whatsapp" /> WhatsApp</a></li>
+          {emailHref && (
+            <li><a href={emailHref}><Icon name="fa6-solid:envelope" /> {negocio.email}</a></li>
+          )}
+        </ul>
+        <h4 style="margin-top:20px">Legal</h4>
+        <ul class="footer-links">
+          {legales.map((l) => <li><a href={l.href} rel="nofollow">{l.label}</a></li>)}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; {anio} {negocio.nombre} — Todos los derechos reservados</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--surface-dark);
+    padding: 56px 0 32px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .footer-brand {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .footer-desc {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 340px;
+  }
+  .footer h4 {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    transition: color var(--transition);
+  }
+  .footer-links a:hover {
+    color: #fff;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 24px;
+  }
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+  }
+  @media (max-width: 520px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

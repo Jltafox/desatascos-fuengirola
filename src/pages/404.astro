@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import { telHref, negocio } from '../data/negocio';
+---
+
+<Base title="Página no encontrada" description="La página que buscas no existe." noindex={true}>
+  <section class="section" style="text-align:center; margin-top:72px;">
+    <div class="container">
+      <h1 style="font-size:48px; color:var(--ink); margin-bottom:12px;">404</h1>
+      <p style="color:var(--ink-muted); margin-bottom:24px;">Esta página no existe o se ha movido.</p>
+      <a href="/" class="btn btn-primary">Volver al inicio</a>
+      <p style="margin-top:20px;">¿Una urgencia? <a href={telHref} style="color:var(--brand); font-weight:700;">Llama al {negocio.telefono.display}</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,60 @@
+---
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import '@fontsource/roboto/900.css';
+import '../styles/tokens.css';
+
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import FloatingPhone from '../components/FloatingPhone.astro';
+import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
+import { negocio } from '../data/negocio';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Imagen para Open Graph (ruta absoluta dentro de /public) */
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogImage = '/og-default.jpg', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={negocio.nombre} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <LocalBusinessSchema />
+    <slot name="head" />
+  </head>
+  <body>
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <FloatingPhone />
+  </body>
+</html>

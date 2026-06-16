@@ -1,0 +1,76 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface Crumb {
+  name: string;
+  href: string;
+}
+interface Props {
+  items: Crumb[];
+}
+const { items } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.name,
+    item: `${site}${c.href}`,
+  })),
+};
+---
+
+<nav class="breadcrumb" aria-label="Migas de pan">
+  <div class="container">
+    <ol>
+      {items.map((c, i) => (
+        <li>
+          {i < items.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
+          {i < items.length - 1 && <Icon name="fa6-solid:chevron-right" />}
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style>
+  .breadcrumb {
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    margin-top: 72px;
+  }
+  .breadcrumb ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 13px;
+  }
+  .breadcrumb li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-muted);
+  }
+  .breadcrumb a {
+    color: var(--ink-muted);
+  }
+  .breadcrumb a:hover {
+    color: var(--brand);
+  }
+  .breadcrumb [data-icon] {
+    font-size: 10px;
+    color: var(--ink-muted);
+  }
+  .breadcrumb [aria-current='page'] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+</style>

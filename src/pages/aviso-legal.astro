@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import { negocio } from '../data/negocio';
+---
+
+<Base title="Aviso legal" description="Aviso legal" noindex={true}>
+  <section class="section" style="margin-top:72px; max-width:760px;">
+    <div class="container">
+      <h1 style="color:var(--ink); margin-bottom:20px;">Aviso legal</h1>
+      <!-- TODO: completar con los datos reales de la empresa antes de publicar. -->
+      <p style="color:var(--ink-muted)">
+        Página pendiente de completar con la razón social{negocio.legal.razonSocial ? `: ${negocio.legal.razonSocial}` : ''},
+        NIF, domicilio y datos de contacto de la empresa. Edita <code>src/pages/aviso-legal.astro</code>.
+      </p>
+    </div>
+  </section>
+</Base>

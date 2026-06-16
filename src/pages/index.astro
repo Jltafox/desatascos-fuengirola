@@ -1,0 +1,556 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import Faqs from '../components/sections/Faqs.astro';
+import CtaBanner from '../components/sections/CtaBanner.astro';
+import {
+  negocio,
+  telHref,
+  whatsappHref,
+  emailHref,
+  zonasTexto,
+} from '../data/negocio';
+import { servicios } from '../data/servicios';
+import { ciudades, barrios } from '../data/zonas';
+import { resenas } from '../data/resenas';
+
+const title = `Desatascos en ${negocio.ciudadPrincipal} 24h | Urgencias — ${negocio.nombre}`;
+const description = negocio.descripcion;
+
+const proceso = [
+  { n: 1, t: 'Llamas', d: 'Cuéntanos el problema. Te atendemos al momento, 24 h.' },
+  { n: 2, t: 'Llegamos', d: `Salimos ya y llegamos en ${negocio.tiempoLlegada}.` },
+  { n: 3, t: 'Precio cerrado', d: 'Te decimos el precio antes de empezar. Sin sorpresas.' },
+  { n: 4, t: 'Resuelto', d: 'Desatascamos y dejamos todo limpio y operativo.' },
+];
+
+const ventajas = [
+  {
+    t: 'Técnicos cercanos y con nombre',
+    d: `${negocio.equipo.join(', ')} y el equipo te tratan con respeto y profesionalidad en cada intervención.`,
+  },
+  {
+    t: 'Sin sorpresas ni venta forzada',
+    d: 'Te explicamos el problema y lo que vamos a hacer. Solo actuamos donde nos autorizas.',
+  },
+  {
+    t: 'Solución en una mañana',
+    d: 'Muchos clientes nos dicen: "otra empresa no pudo, vosotros sí". Nos ponemos a tope.',
+  },
+];
+---
+
+<Base title={title} description={description}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge"><Icon name="fa6-solid:bolt" /> Desatascos urgentes en {negocio.ciudadPrincipal}</span>
+        <h1>Desatascos rápidos en <em>{negocio.ciudadPrincipal}</em> 24h</h1>
+        <p class="hero-sub">
+          Solucionamos atascos y desatoros en tuberías y arquetas con rapidez.
+          Profesionales en {zonasTexto}.
+        </p>
+        <div class="hero-actions">
+          <a href={telHref} class="btn btn-primary"><Icon name="fa6-solid:phone" /> Llamar ahora</a>
+          <a href={whatsappHref} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="fa6-brands:whatsapp" /> WhatsApp</a>
+        </div>
+        <div class="trust-bar">
+          <div class="trust-item"><Icon name="fa6-solid:clock" /><span><strong>24 horas</strong>Todos los días</span></div>
+          <div class="trust-item"><Icon name="fa6-solid:shield-halved" /><span><strong>+{negocio.experienciaAnios} años</strong>Experiencia</span></div>
+          <div class="trust-item"><Icon name="fa6-solid:star" /><span><strong>{negocio.valoracion.media} ★</strong>en Google</span></div>
+          <div class="trust-item"><Icon name="fa6-solid:hand-holding-dollar" /><span><strong>Precio cerrado</strong>Sin sorpresas</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="section" id="servicios">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Nuestros servicios</span>
+        <h2>Soluciones profesionales para cada atasco</h2>
+        <p>De una cañería atascada a la limpieza de una fosa séptica.</p>
+      </div>
+      <div class="svc-grid">
+        {servicios.map((s) => (
+          <a href={`/servicios/${s.slug}/`} class="svc-card">
+            <div class="svc-icon"><Icon name={s.icono} /></div>
+            <h3>{s.nombre}</h3>
+            <p>{s.resumen}</p>
+            <span class="svc-cta">Ver servicio <Icon name="fa6-solid:arrow-right" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ -->
+  <section class="section section-alt" id="por-que">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Por qué elegirnos</span>
+        <h2>Cercanos, rápidos y sin letra pequeña</h2>
+      </div>
+      <div class="why-grid">
+        {ventajas.map((v) => (
+          <div class="why-point">
+            <div class="why-check"><Icon name="fa6-solid:check" /></div>
+            <div><h3>{v.t}</h3><p>{v.d}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Cómo trabajamos</span>
+        <h2>Resuelto en 4 pasos</h2>
+      </div>
+      <div class="proceso-grid">
+        {proceso.map((p) => (
+          <div class="proceso-step">
+            <span class="proceso-num">{p.n}</span>
+            <h3>{p.t}</h3>
+            <p>{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ZONAS -->
+  <section class="section section-alt" id="zonas">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Dónde trabajamos</span>
+        <h2>Desatascos en {zonasTexto}</h2>
+        <p>Cobertura en toda la zona, con salida inmediata para urgencias.</p>
+      </div>
+      <div class="zonas-grid">
+        {[...ciudades, ...barrios].map((z) => (
+          <a href={`/zonas/${z.slug}/`} class="zona-tag">
+            <Icon name="fa6-solid:location-dot" /> {z.nombre}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- OPINIONES -->
+  <section class="section" id="opiniones">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label"><Icon name="fa6-brands:google" /> Reseñas reales de Google</span>
+        <h2>Lo que dicen nuestros clientes</h2>
+      </div>
+      <div class="resenas-grid">
+        {resenas.map((r) => (
+          <figure class="resena-card">
+            <div class="resena-stars">
+              {Array.from({ length: r.estrellas }).map(() => <Icon name="fa6-solid:star" />)}
+            </div>
+            <blockquote>{r.texto}</blockquote>
+            <figcaption>
+              <strong>{r.autor}</strong>
+              {r.fecha && <span>{r.fecha}</span>}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faqs />
+
+  <CtaBanner />
+
+  <!-- CONTACTO -->
+  <section class="section" id="contacto">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Contacto</span>
+        <h2>¿Hablamos?</h2>
+        <p>Cuéntanos qué necesitas y te llamamos en menos de 5 minutos.</p>
+      </div>
+      <div class="contacto-wrap">
+        <!--
+          FORMULARIO: el sitio es estático. Para que envíe, conéctalo a Netlify Forms
+          (añade name="contacto" data-netlify="true") o a Formspree (action="https://formspree.io/f/XXarchivo").
+          Mientras, los CTA de teléfono y WhatsApp funcionan siempre.
+        -->
+        <form class="contacto-form" method="POST" action="#">
+          <h3>Te llamamos hoy mismo</h3>
+          <input type="text" name="nombre" placeholder="Tu nombre" required />
+          <input type="tel" name="telefono" placeholder="Tu teléfono" required />
+          <textarea name="mensaje" placeholder="Cuéntanos qué necesitas..."></textarea>
+          <button type="submit" class="btn btn-primary"><Icon name="fa6-solid:paper-plane" /> Enviar</button>
+        </form>
+        <div class="contacto-info">
+          <a class="contacto-item" href={telHref}>
+            <Icon name="fa6-solid:phone" />
+            <span><small>Teléfono</small><strong>{negocio.telefono.display}</strong></span>
+          </a>
+          <a class="contacto-item" href={whatsappHref} target="_blank" rel="noopener">
+            <Icon name="fa6-brands:whatsapp" />
+            <span><small>WhatsApp</small><strong>{negocio.whatsapp.display}</strong></span>
+          </a>
+          {emailHref && (
+            <a class="contacto-item" href={emailHref}>
+              <Icon name="fa6-solid:envelope" />
+              <span><small>Email</small><strong>{negocio.email}</strong></span>
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    padding-top: 72px;
+    background: var(--surface-dark);
+    background-image: linear-gradient(135deg, #0f172a 0%, var(--brand) 130%);
+    overflow: hidden;
+  }
+  .hero-content {
+    max-width: 720px;
+    padding: 60px 0;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 22px;
+  }
+  .hero-badge [data-icon] {
+    color: var(--accent);
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5.5vw, 58px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    margin-bottom: 18px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--brand-light);
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 32px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+  }
+  .trust-bar {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 13px;
+  }
+  .trust-item [data-icon] {
+    font-size: 20px;
+    color: var(--brand-light);
+  }
+  .trust-item strong {
+    display: block;
+    color: #fff;
+    font-size: 15px;
+  }
+
+  /* SERVICIOS */
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .svc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+  }
+  .svc-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--brand);
+  }
+  .svc-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--brand);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+  .svc-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .svc-card p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+  .svc-cta {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--brand);
+  }
+
+  /* WHY */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+  }
+  .why-point {
+    display: flex;
+    gap: 16px;
+  }
+  .why-check {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(16, 155, 197, 0.12);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .why-point h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .why-point p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* PROCESO */
+  .proceso-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .proceso-step {
+    text-align: center;
+    padding: 28px 20px;
+  }
+  .proceso-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 900;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  .proceso-step h3 {
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .proceso-step p {
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+
+  /* ZONAS */
+  .zonas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .zona-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    color: var(--ink-light);
+    font-weight: 500;
+    transition: all var(--transition);
+  }
+  .zona-tag:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  .zona-tag [data-icon] {
+    color: var(--brand);
+    font-size: 12px;
+  }
+
+  /* RESEÑAS */
+  .resenas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .resena-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+  }
+  .resena-stars {
+    display: flex;
+    gap: 3px;
+    color: #facc15;
+    margin-bottom: 12px;
+  }
+  .resena-card blockquote {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-light);
+    margin-bottom: 16px;
+  }
+  .resena-card figcaption strong {
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .resena-card figcaption span {
+    display: block;
+    color: var(--ink-muted);
+    font-size: 12px;
+  }
+
+  /* CONTACTO */
+  .contacto-wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: start;
+  }
+  .contacto-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .contacto-form h3 {
+    font-size: 19px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .contacto-form input,
+  .contacto-form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: var(--font);
+  }
+  .contacto-form textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+  .contacto-form input:focus,
+  .contacto-form textarea:focus {
+    outline: none;
+    border-color: var(--brand);
+  }
+  .contacto-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .contacto-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    transition: all var(--transition);
+  }
+  .contacto-item:hover {
+    border-color: var(--brand);
+    transform: translateY(-1px);
+  }
+  .contacto-item [data-icon] {
+    font-size: 20px;
+    color: var(--brand);
+  }
+  .contacto-item small {
+    color: var(--ink-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .contacto-item strong {
+    color: var(--ink);
+    font-size: 15px;
+  }
+  @media (max-width: 768px) {
+    .contacto-wrap {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

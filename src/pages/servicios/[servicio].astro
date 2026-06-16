@@ -1,0 +1,211 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/seo/Breadcrumb.astro';
+import Faqs from '../../components/sections/Faqs.astro';
+import CtaBanner from '../../components/sections/CtaBanner.astro';
+import { servicios, type Servicio } from '../../data/servicios';
+import { ciudades } from '../../data/zonas';
+import { negocio, telHref, whatsappHref, zonasTexto } from '../../data/negocio';
+
+export function getStaticPaths() {
+  return servicios.map((s) => ({
+    params: { servicio: s.slug },
+    props: { servicio: s },
+  }));
+}
+
+interface Props {
+  servicio: Servicio;
+}
+const { servicio } = Astro.props;
+
+const title = `${servicio.titulo} en ${negocio.ciudadPrincipal} | ${negocio.nombre}`;
+const description = `${servicio.resumen} ${servicio.titulo} en ${zonasTexto}. Servicio 24h, precio cerrado. Llama al ${negocio.telefono.display}.`;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: servicio.titulo,
+  provider: { '@id': `${site}/#business` },
+  areaServed: negocio.zonasServicio.map((z) => ({ '@type': 'City', name: z })),
+  name: `${servicio.titulo} en ${negocio.ciudadPrincipal}`,
+  description: servicio.intro,
+};
+
+const otros = servicios.filter((s) => s.slug !== servicio.slug);
+---
+
+<Base title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <Breadcrumb
+    items={[
+      { name: 'Inicio', href: '/' },
+      { name: 'Servicios', href: '/#servicios' },
+      { name: servicio.nombre, href: `/servicios/${servicio.slug}/` },
+    ]}
+  />
+
+  <section class="svc-hero">
+    <div class="container">
+      <div class="svc-icon-lg"><Icon name={servicio.icono} /></div>
+      <h1>{servicio.titulo} en {negocio.ciudadPrincipal}</h1>
+      <p class="lead">{servicio.intro}</p>
+      <div class="hero-actions">
+        <a href={telHref} class="btn btn-primary"><Icon name="fa6-solid:phone" /> Llamar — {negocio.telefono.display}</a>
+        <a href={whatsappHref} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="fa6-brands:whatsapp" /> WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>¿Qué incluye?</h2>
+      <ul class="bullets">
+        {servicio.bullets.map((b) => (
+          <li><Icon name="fa6-solid:circle-check" /> {b}</li>
+        ))}
+      </ul>
+
+      <h2>Disponibles en {zonasTexto}</h2>
+      <p>Prestamos este servicio en toda la zona. Elige tu localidad:</p>
+      <div class="zonas-inline">
+        {ciudades.map((z) => (
+          <a href={`/zonas/${z.slug}/`} class="zona-tag"><Icon name="fa6-solid:location-dot" /> {z.nombre}</a>
+        ))}
+      </div>
+
+      <h2>Otros servicios</h2>
+      <div class="otros-grid">
+        {otros.map((s) => (
+          <a href={`/servicios/${s.slug}/`} class="otro-card">
+            <Icon name={s.icono} />
+            <span>{s.nombre}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faqs />
+  <CtaBanner titulo={`¿Necesitas un ${servicio.nombre.toLowerCase()} en ${negocio.ciudadPrincipal}?`} />
+</Base>
+
+<style>
+  .svc-hero {
+    background: linear-gradient(135deg, #0f172a 0%, var(--brand) 130%);
+    color: #fff;
+    padding: 56px 0 64px;
+    text-align: center;
+  }
+  .svc-icon-lg {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #fff;
+  }
+  .svc-hero h1 {
+    font-size: clamp(28px, 4.5vw, 44px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .svc-hero .lead {
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 640px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+  .svc-hero .hero-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .narrow {
+    max-width: 760px;
+  }
+  .narrow h2 {
+    font-size: 24px;
+    color: var(--ink);
+    margin: 36px 0 16px;
+    letter-spacing: -0.4px;
+  }
+  .narrow h2:first-child {
+    margin-top: 0;
+  }
+  .bullets {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+  .bullets li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    color: var(--ink-light);
+  }
+  .bullets [data-icon] {
+    color: var(--accent);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .zonas-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .zona-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    color: var(--ink-light);
+    transition: all var(--transition);
+  }
+  .zona-tag:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  .zona-tag [data-icon] {
+    color: var(--brand);
+    font-size: 12px;
+  }
+  .otros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .otro-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    color: var(--ink);
+    transition: all var(--transition);
+  }
+  .otro-card:hover {
+    border-color: var(--brand);
+    box-shadow: var(--shadow-sm);
+  }
+  .otro-card [data-icon] {
+    color: var(--brand);
+    font-size: 18px;
+  }
+</style>

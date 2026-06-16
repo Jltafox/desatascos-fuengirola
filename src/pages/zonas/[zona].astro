@@ -1,0 +1,163 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/seo/Breadcrumb.astro';
+import Faqs from '../../components/sections/Faqs.astro';
+import CtaBanner from '../../components/sections/CtaBanner.astro';
+import { zonas, type Zona } from '../../data/zonas';
+import { servicios } from '../../data/servicios';
+import { negocio, telHref, whatsappHref } from '../../data/negocio';
+
+export function getStaticPaths() {
+  return zonas.map((z) => ({
+    params: { zona: z.slug },
+    props: { zona: z },
+  }));
+}
+
+interface Props {
+  zona: Zona;
+}
+const { zona } = Astro.props;
+
+const title = `Desatascos en ${zona.nombre} 24h | Urgentes — ${negocio.nombre}`;
+const description = `Desatascos y desatoros urgentes en ${zona.nombre}. Servicio 24h, llegamos en ${negocio.tiempoLlegada}, precio cerrado. Llama al ${negocio.telefono.display}.`;
+---
+
+<Base title={title} description={description}>
+  <Breadcrumb
+    items={[
+      { name: 'Inicio', href: '/' },
+      { name: 'Zonas', href: '/#zonas' },
+      { name: zona.nombre, href: `/zonas/${zona.slug}/` },
+    ]}
+  />
+
+  <section class="zona-hero">
+    <div class="container">
+      <span class="badge"><Icon name="fa6-solid:location-dot" /> {zona.ciudad}</span>
+      <h1>Desatascos en {zona.nombre} <em>24h</em></h1>
+      <p class="lead">{zona.intro} Servicio urgente las 24 horas con llegada en {negocio.tiempoLlegada} y precio cerrado.</p>
+      <div class="hero-actions">
+        <a href={telHref} class="btn btn-primary"><Icon name="fa6-solid:phone" /> Llamar — {negocio.telefono.display}</a>
+        <a href={whatsappHref} target="_blank" rel="noopener" class="btn btn-whatsapp"><Icon name="fa6-brands:whatsapp" /> WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>Nuestros servicios en {zona.nombre}</h2>
+      <div class="svc-list">
+        {servicios.map((s) => (
+          <a href={`/servicios/${s.slug}/`} class="svc-row">
+            <div class="svc-row-icon"><Icon name={s.icono} /></div>
+            <div>
+              <strong>{s.nombre}</strong>
+              <span>{s.resumen}</span>
+            </div>
+            <Icon name="fa6-solid:arrow-right" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faqs titulo={`Dudas frecuentes en ${zona.nombre}`} />
+  <CtaBanner titulo={`¿Atasco en ${zona.nombre}? Te lo solucionamos hoy`} />
+</Base>
+
+<style>
+  .zona-hero {
+    background: linear-gradient(135deg, #0f172a 0%, var(--brand) 130%);
+    color: #fff;
+    padding: 52px 0 60px;
+  }
+  .zona-hero .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 7px 14px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 18px;
+  }
+  .zona-hero h1 {
+    font-size: clamp(30px, 5vw, 50px);
+    font-weight: 900;
+    letter-spacing: -1.2px;
+    margin-bottom: 16px;
+  }
+  .zona-hero h1 em {
+    font-style: normal;
+    color: var(--brand-light);
+  }
+  .zona-hero .lead {
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 620px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .zona-hero .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .narrow {
+    max-width: 760px;
+  }
+  .narrow h2 {
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 20px;
+    letter-spacing: -0.4px;
+  }
+  .svc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .svc-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all var(--transition);
+  }
+  .svc-row:hover {
+    border-color: var(--brand);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+  .svc-row-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--brand);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .svc-row strong {
+    display: block;
+    color: var(--ink);
+    font-size: 16px;
+  }
+  .svc-row span {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+  .svc-row > [data-icon] {
+    margin-left: auto;
+    color: var(--brand);
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+/**
+ * JSON-LD LocalBusiness (tipo Plumber, subtipo válido para desatascos).
+ * Se incluye en todas las páginas vía Base.astro.
+ * Solo añade address / geo / aggregateRating si los datos son REALES.
+ */
+import { negocio } from '../../data/negocio';
+
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+
+const schema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Plumber',
+  '@id': `${site}/#business`,
+  name: negocio.nombre,
+  description: negocio.descripcion,
+  url: site || undefined,
+  telephone: `+34${negocio.telefono.tel.replace(/^(\+?34)/, '')}`,
+  areaServed: negocio.zonasServicio.map((z) => ({ '@type': 'City', name: z })),
+  priceRange: '€€',
+  openingHoursSpecification: negocio.abierto24h
+    ? {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ],
+        opens: '00:00',
+        closes: '23:59',
+      }
+    : undefined,
+};
+
+if (negocio.email) schema.email = negocio.email;
+
+// Dirección solo si hay NAP real
+if (negocio.direccion.calle && negocio.direccion.cp) {
+  schema.address = {
+    '@type': 'PostalAddress',
+    streetAddress: negocio.direccion.calle,
+    postalCode: negocio.direccion.cp,
+    addressLocality: negocio.direccion.localidad,
+    addressRegion: negocio.direccion.provincia,
+    addressCountry: negocio.direccion.pais,
+  };
+} else {
+  // Sin calle, al menos localidad/región para contexto geográfico
+  schema.address = {
+    '@type': 'PostalAddress',
+    addressLocality: negocio.ciudadPrincipal,
+    addressRegion: negocio.provincia,
+    addressCountry: 'ES',
+  };
+}
+
+// Geo solo si hay coordenadas reales
+if (negocio.geo.lat && negocio.geo.lng) {
+  schema.geo = {
+    '@type': 'GeoCoordinates',
+    latitude: negocio.geo.lat,
+    longitude: negocio.geo.lng,
+  };
+}
+
+// AggregateRating SOLO si hay nº real de reseñas (no inventar)
+if (negocio.valoracion.total && negocio.valoracion.total > 0) {
+  schema.aggregateRating = {
+    '@type': 'AggregateRating',
+    ratingValue: negocio.valoracion.media,
+    reviewCount: negocio.valoracion.total,
+  };
+}
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(schema)}
+/>
