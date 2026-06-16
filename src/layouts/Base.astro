@@ -10,6 +10,7 @@ import Footer from '../components/Footer.astro';
 import FloatingPhone from '../components/FloatingPhone.astro';
 import LocalBusinessSchema from '../components/seo/LocalBusinessSchema.astro';
 import { negocio } from '../data/negocio';
+import { INDEXABLE } from '../consts';
 
 interface Props {
   title: string;
@@ -22,6 +23,10 @@ interface Props {
 const { title, description, ogImage = '/og-default.jpg', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL(ogImage, Astro.site).toString();
+
+// Toda la web va en noindex salvo que se active INDEXABLE (PUBLIC_INDEXABLE=true).
+// `noindex` por página puede forzar noindex aunque el sitio sea indexable.
+const robotsContent = !INDEXABLE || noindex ? 'noindex, nofollow' : 'index, follow';
 ---
 
 <!doctype html>
@@ -32,7 +37,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="robots" content={robotsContent} />
+    <meta name="googlebot" content={robotsContent} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
