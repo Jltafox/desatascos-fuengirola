@@ -4,21 +4,15 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/seo/Breadcrumb.astro';
 import Faqs from '../../components/sections/Faqs.astro';
 import CtaBanner from '../../components/sections/CtaBanner.astro';
-import { zonas, type Zona } from '../../data/zonas';
+import { getZona } from '../../data/zonas';
 import { servicios } from '../../data/servicios';
 import { negocio, telHref, whatsappHref } from '../../data/negocio';
 
-export function getStaticPaths() {
-  return zonas.map((z) => ({
-    params: { zona: z.slug },
-    props: { zona: z },
-  }));
+const { zona: slug } = Astro.params;
+const zona = slug ? getZona(slug) : undefined;
+if (!zona) {
+  return new Response('Zona no encontrada', { status: 404 });
 }
-
-interface Props {
-  zona: Zona;
-}
-const { zona } = Astro.props;
 
 const title = `Desatascos en ${zona.nombre} 24h | Urgentes — ${negocio.nombre}`;
 const description = `Desatascos y desatoros urgentes en ${zona.nombre}. Servicio 24h, llegamos en ${negocio.tiempoLlegada}, precio cerrado. Llama al ${negocio.telefono.display}.`;

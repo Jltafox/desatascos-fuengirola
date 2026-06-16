@@ -4,21 +4,15 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/seo/Breadcrumb.astro';
 import Faqs from '../../components/sections/Faqs.astro';
 import CtaBanner from '../../components/sections/CtaBanner.astro';
-import { servicios, type Servicio } from '../../data/servicios';
+import { servicios, getServicio } from '../../data/servicios';
 import { ciudades } from '../../data/zonas';
 import { negocio, telHref, whatsappHref, zonasTexto } from '../../data/negocio';
 
-export function getStaticPaths() {
-  return servicios.map((s) => ({
-    params: { servicio: s.slug },
-    props: { servicio: s },
-  }));
+const { servicio: slug } = Astro.params;
+const servicio = slug ? getServicio(slug) : undefined;
+if (!servicio) {
+  return new Response('Servicio no encontrado', { status: 404 });
 }
-
-interface Props {
-  servicio: Servicio;
-}
-const { servicio } = Astro.props;
 
 const title = `${servicio.titulo} en ${negocio.ciudadPrincipal} | ${negocio.nombre}`;
 const description = `${servicio.resumen} ${servicio.titulo} en ${zonasTexto}. Servicio 24h, precio cerrado. Llama al ${negocio.telefono.display}.`;

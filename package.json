@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
-    "@vercel/edge": "^1.2.1",
+    "@astrojs/vercel": "^8.0.0",
     "@fontsource/roboto": "^5.1.1",
     "@iconify-json/fa6-brands": "^1.2.5",
     "@iconify-json/fa6-solid": "^1.2.3",
