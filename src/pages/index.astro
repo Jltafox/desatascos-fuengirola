@@ -195,13 +195,52 @@ const ventajas = [
           (añade name="contacto" data-netlify="true") o a Formspree (action="https://formspree.io/f/XXarchivo").
           Mientras, los CTA de teléfono y WhatsApp funcionan siempre.
         -->
-        <form class="contacto-form" method="POST" action="#">
+        <form class="contacto-form" id="contacto-form" method="POST" action="/api/contacto/">
           <h3>Te llamamos hoy mismo</h3>
           <input type="text" name="nombre" placeholder="Tu nombre" required />
           <input type="tel" name="telefono" placeholder="Tu teléfono" required />
           <textarea name="mensaje" placeholder="Cuéntanos qué necesitas..."></textarea>
-          <button type="submit" class="btn btn-primary"><Icon name="fa6-solid:paper-plane" /> Enviar</button>
+          <input type="hidden" name="origen" id="form-origen" value="" />
+          <button type="submit" class="btn btn-primary" id="form-btn">
+            <Icon name="fa6-solid:paper-plane" /> Enviar
+          </button>
+          <p class="form-status" id="form-status" aria-live="polite"></p>
         </form>
+
+        <script>
+          const form = document.getElementById('contacto-form') as HTMLFormElement;
+          const btn = document.getElementById('form-btn') as HTMLButtonElement;
+          const status = document.getElementById('form-status') as HTMLParagraphElement;
+          const origenInput = document.getElementById('form-origen') as HTMLInputElement;
+
+          origenInput.value = window.location.href;
+
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.textContent = 'Enviando…';
+            status.textContent = '';
+            status.className = 'form-status';
+
+            try {
+              const res = await fetch('/api/contacto/', { method: 'POST', body: new FormData(form) });
+              const json = await res.json();
+              if (json.ok) {
+                status.textContent = '✓ Mensaje enviado. Te llamamos enseguida.';
+                status.className = 'form-status ok';
+                form.reset();
+              } else {
+                throw new Error(json.error ?? 'Error desconocido');
+              }
+            } catch {
+              status.textContent = '✗ No se pudo enviar. Llámanos directamente.';
+              status.className = 'form-status err';
+            } finally {
+              btn.disabled = false;
+              btn.innerHTML = '<svg aria-hidden="true" width="1em" height="1em"></svg> Enviar';
+            }
+          });
+        </script>
         <div class="contacto-info">
           <a class="contacto-item" href={telHref}>
             <Icon name="fa6-solid:phone" />
@@ -618,6 +657,13 @@ const ventajas = [
     outline: none;
     border-color: var(--brand);
   }
+  .form-status {
+    font-size: 14px;
+    min-height: 20px;
+    text-align: center;
+  }
+  .form-status.ok  { color: #16a34a; }
+  .form-status.err { color: #dc2626; }
   .contacto-info {
     display: flex;
     flex-direction: column;
