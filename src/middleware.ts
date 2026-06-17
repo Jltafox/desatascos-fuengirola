@@ -21,6 +21,9 @@ export const onRequest = defineMiddleware((context, next) => {
   // Sin contraseña configurada => web pública.
   if (!expectedPass) return next();
 
+  // Las rutas de API no necesitan Basic Auth (son endpoints internos del sitio).
+  if (context.url.pathname.startsWith('/api/')) return next();
+
   const header = context.request.headers.get('authorization');
   if (header) {
     const [scheme, encoded] = header.split(' ');
